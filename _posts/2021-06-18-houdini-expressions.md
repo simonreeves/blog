@@ -22,7 +22,7 @@ vlength(vtorigin(".","../focus"))
 ```
 
 
-### Frame Sequnce offset
+### Frame Sequence offset
 We always start frameranges from `1001` instead of `1` to make it a little easier when dealine with preroll - so often one needs to offset an image sequence from 1 to 1001
 For example in the background of a camera:
 
