@@ -25,7 +25,7 @@ int near_pts[] = nearpoints(target_index, @P, chf('maxdist'));
 foreach (int near_pt; near_pts) {
 
     // randomly decide to skip this combination of ptnum and pt
-    if (rand(pt + @ptnum + chf('seed')) < chf('rand_thresh')) {
+    if (rand(near_pt + @ptnum + chf('seed')) < chf('random_cull')) {
         continue;
     }
 
@@ -37,48 +37,61 @@ foreach (int near_pt; near_pts) {
     
     // create new prim from this point to newly created point
     int new_prim = addprim(0, 'polyline', @ptnum, found_point);
+}
 ```
 
-these lines skip random connections to not generate so much!
+note that these lines skip some connections for a quick way to vary, or not generate so much!
 ```c
     // randomly decide to skip this combination of ptnum and pt
-    if (rand(pt + @ptnum + chf('seed')) < chf('rand_thresh')) {
+    if (rand(pt + @ptnum + chf('seed')) < chf('random_cull')) {
         continue;
     }
 ```
 
-### Avoid intersecting geometry
+### Collide with intersection geometry
+Additionally with geo plugged into the third input we can check if it is blocking connections and end them at that stage instead.
 ```c
+// target index is the geo at input 1
 int target_index = 1;
-int pts[] = nearpoints(target_index, @P, chf('maxdist'));
-int pt;
+int collision_index = 2;
 
-foreach (pt; pts) {
+// for each point, find all nearpoints on input 1, store in array
+int near_pts[] = nearpoints(target_index, @P, chf('maxdist'));
 
-    // randomly decide to skip point!
-    if (rand(pt + @ptnum + chf('seed')) > chf('rand_thresh')) {
+foreach (int near_pt; near_pts) {
+
+    // randomly decide to skip this combination of ptnum and pt
+    if (rand(near_pt + @ptnum + chf('seed')) < chf('random_cull')) {
         continue;
     }
     
-    // get found points position
-    vector found_pos = point(target_index, 'P', pt);
+    // get position of the found point
+    vector found_pos = point(target_index, 'P', near_pt);
 
+    // get direction from point to its foundpoint
     vector dir = normalize(found_pos - v@P) * 10.0;
-    // v@dir = dir;
+
+    // init variables
     vector intersect_pos;
     vector intersect_uvw;
-    intersect(2, v@P, dir, intersect_pos, intersect_uvw);
     
-       
-    // create new point from other geo
-    // int found_point = addpoint(0, found_pos);
-    // instead use the interesect point
-    int found_point = addpoint(0, intersect_pos);
+    // find intersection with collision geo along direction from point 
+    int intersected = intersect(collision_index, v@P, dir, intersect_pos, intersect_uvw);
+    
+    int found_point;
 
+    // if there was no collision
+    if (intersected == -1) {
+        // create new point from other geo
+        found_point = addpoint(0, found_pos);
+    }
+    else {
+        // instead use the interesect point
+        found_point = addpoint(0, intersect_pos);
+    }
     
     // create new prim using those points
     int new_prim = addprim(0, 'polyline', @ptnum, found_point);
-
 }
 ```
 
