@@ -10,10 +10,12 @@ tags:
 
 ### Houdini vex connect all points
 
-I have two objects, I want to 'connect adjacent points' but I find that node wont just connect EVERYTHING, not sure where it limits it..
+I have two objects, I want to 'connect adjacent points' but I find that node will just connect EVERYTHING, not sure where it limits it..
 
+So I decided to explore having more control in vex, using a `point wrangle`:
 
-So in vex in a `point wrangle`:
+![image](https://user-images.githubusercontent.com/12150445/144092737-57f97ec1-7ba8-47be-b0db-6fcedaabd59d.png)
+
 
 ```c
 // target index is the geo at input 1
