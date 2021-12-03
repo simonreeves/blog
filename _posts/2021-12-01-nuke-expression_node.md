@@ -5,7 +5,6 @@ categories:
 tags:
   - nuke
   - expressions
-classes: wide
 ---
 
 
