@@ -11,7 +11,7 @@ tags:
 ### Rotate Orient Attribute
 I created orient attributes on points already, and now wanted them to spin randomly. The points are fed into `copy to points`.
 I could 'rotate packed prims' afterwards but they are not packed prims yet as I was using redshift proxies so want to rotate the `@orient` instead.
-Blatently foun info from (cgwiki 🙏)[https://www.tokeru.com/cgwiki/index.php?title=JoyOfVex17#Combine_orients_with_qmultiply]
+Blatently foun info from [cgwiki 🙏](https://www.tokeru.com/cgwiki/index.php?title=JoyOfVex17#Combine_orients_with_qmultiply)
 
 in a `point attribte` SOP:
 
