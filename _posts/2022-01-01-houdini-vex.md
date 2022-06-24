@@ -81,3 +81,24 @@ foreach (int neb_id; neb_ids) {
     addpoint(0, pos);
 }
 ```
+
+Instead of just fetching the firt found point, choose how many to keep from each unique val with `int keep_num = chi('amount_to_keep');`
+
+```c
+// in a detail wrangle
+int keepers[];
+int keep_num = chi('amount_to_keep');
+int neb_ids[] = uniquevals(1, 'point', 'neb_id');
+
+foreach (int neb_id; neb_ids) {
+    for (int w=0; w<keep_num; w++) {
+        int found = findattribval(1, "point", "neb_id", neb_id, w);
+        append(keepers, found);
+    }
+ }
+
+ foreach (int foundpt; keepers) {
+    vector pos = point(1, 'P', foundpt);
+    addpoint(0, pos);
+}
+```
