@@ -52,3 +52,32 @@ vector axis = {0, 1, 0};
 vector2 u = rand(@class);
 vector direction = sample_direction_cone(axis, radians(ch("angle")), u);
 ```
+
+## Find first of an attribte and make point
+Use a fresh wrangle and create new points from second index, instead of 'keeping' some points from the input.
+
+![image](https://user-images.githubusercontent.com/12150445/175514915-df63a713-f52a-4a88-8b30-f45e2bbe648c.png)
+
+Counts the unique values of an attribute `neb_id` then loops through them to find the first point with that value.
+
+```c
+// in a detail wrangle
+int keepers[];
+
+// get the unique values of an attribute
+int neb_ids[] = uniquevals(1, 'point', 'neb_id');
+
+// loop through each value
+foreach (int neb_id; neb_ids) {
+    // find the first matching point
+    int found = findattribval(1, "point", "neb_id", neb_id);
+    // append to an array
+    append(keepers, found);
+ }
+
+// create new points from the matching points
+ foreach (int foundpt; keepers) {
+    vector pos = point(1, 'P', foundpt);
+    addpoint(0, pos);
+}
+```
