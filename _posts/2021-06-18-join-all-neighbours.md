@@ -1,7 +1,7 @@
 ---
 title: "Houdini vex connect all points"
 categories:
-  - blog
+  - Houdini
 tags:
   - houdini
   - vex

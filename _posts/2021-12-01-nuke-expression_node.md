@@ -1,7 +1,7 @@
 ---
 title: "Nuke Expression Node"
 categories:
-  - blog
+  - Nuke
 tags:
   - nuke
   - expressions

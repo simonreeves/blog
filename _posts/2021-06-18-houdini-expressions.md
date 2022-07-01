@@ -1,7 +1,7 @@
 ---
 title: "Houdini Expressions"
 categories:
-  - blog
+  - Houdini
 tags:
   - houdini
   - expressions
