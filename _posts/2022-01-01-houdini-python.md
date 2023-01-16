@@ -49,6 +49,15 @@ def nulls_from_x():
 # Shelf/tab tools
 
 ## User placement of new nodes in network view
+
+
+https://user-images.githubusercontent.com/12150445/212692148-295c0079-8b7e-4454-8b7e-14bc5a3b5cfc.mp4
+
+
+<iframe src="https://user-images.githubusercontent.com/12150445/212692148-295c0079-8b7e-4454-8b7e-14bc5a3b5cfc.mp4" frameborder="0" autoplay></iframe>
+
+
+
   * [Sidefx docs here](https://www.sidefx.com/docs/houdini/hom/tool_script.html)
   * [Production example in my BeeHou module](https://github.com/simonreeves/BeeHou/commit/636ea49891c593e413990cecfd53cf216968df1f)
 
