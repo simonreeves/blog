@@ -50,9 +50,11 @@ def nulls_from_x():
 
 ## User placement of new nodes in network view
 
-<video playsinline preload autoplay loop>
-  <source src="https://user-images.githubusercontent.com/12150445/212692148-295c0079-8b7e-4454-8b7e-14bc5a3b5cfc.mp4" type="video/mp4">
+<video playsinline preload autoplay loop src="https://user-images.githubusercontent.com/12150445/212692148-295c0079-8b7e-4454-8b7e-14bc5a3b5cfc.mp4" type="video/mp4">
 </video>
+
+
+<video preload="true" playsinline autoplay="autoplay" muted="muted" loop="loop" src="https://sr-site.s3.amazonaws.com/2021/RND_Shot_Toon_Master_v001_Toon.mp4?AWSAccessKeyId=AKIA47O47Y2EV5POUOSQ&amp;Signature=%2FZxsQ1PHoCujiJQ2Q%2FLyiCRZ6hg%3D&amp;Expires=1673976310"></video>
 
   * [Sidefx docs here](https://www.sidefx.com/docs/houdini/hom/tool_script.html)
   * [Production example in my BeeHou module](https://github.com/simonreeves/BeeHou/commit/636ea49891c593e413990cecfd53cf216968df1f)
