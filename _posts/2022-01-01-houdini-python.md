@@ -50,7 +50,7 @@ def nulls_from_x():
 
 ## User placement of new nodes in network view
 
-<video controls autoplay>
+<video controls autoplay loop>
   <source src="https://user-images.githubusercontent.com/12150445/212692148-295c0079-8b7e-4454-8b7e-14bc5a3b5cfc.mp4" type="video/mp4">
 </video>
 
