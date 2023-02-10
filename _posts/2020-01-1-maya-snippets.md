@@ -11,11 +11,19 @@ tags:
 
 # Maya Python Snippets
 
-## expressions
+# Expressions
+
+expressions are their own DAG object, written like `object.attr = frame * 2`
 ```
 PNT_Prop_RecordPlayer_Arm001.rotateY = (noise(time*10)*.1)+12
 ```
+can be made in python simply with a string
+```python
+# example from a script with a blendshape
+expr_string = '{obj}.{attr} = frame) * (1.0/5.0)'.format(obj=bs, attr='polyShape1')
+expr = cmds.expression(string=expr_string)
 
+```
 Alembic export, disable viewports, add timer
 ```python
 import time
@@ -30,19 +38,19 @@ mel.eval('AbcExport -j "-frameRange 991 1100 -dataFormat ogawa -file {}"'.format
 mel.eval("paneLayout -e -manage true $gMainPane")
 
 TimerEnd = time.time()
-print 'TimeTaken: {0}s'.format(round(TimerEnd - TimerStart, 2))
+print('TimeTaken: {0}s'.format(round(TimerEnd - TimerStart, 2)))
 ```
 
+
 ```python
-# Maya python snippets
 
 # Check maya version
 from pymel import versions
 if versions.current() >= versions.v2008:
-    print "The current version is later than Maya 2008"
+    print("The current version is later than Maya 2008")
 
 # returns something like 201400
-print versions.current()
+print(versions.current())
 
 
 # To use mel commands via python (basically)
