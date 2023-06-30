@@ -9,9 +9,11 @@ tags:
 ---
 
 
-# Maya Python Snippets
+# Maya Snippets
+I try to use pymel whenever possible, basically a wrapper for cmds, which is for mel... but it object oriented ♥
 
-# Expressions
+
+## Expressions
 
 expressions are their own DAG object, written like `object.attr = frame * 2`
 ```
@@ -29,7 +31,7 @@ Alembic export, disable viewports, add timer
 import time
 from maya import mel
 
-ExportPath = 'M:/0131_Shynola_Maserati/D_3D_PRODUCTION/03_SHOTS/Shot_220/02_CACHES/Maserati_Shot_220_ForFX_v014.abc'
+ExportPath = 'M:/path/to/mycache_v014.abc'
 
 TimerStart = time.time()
 
@@ -41,148 +43,151 @@ TimerEnd = time.time()
 print('TimeTaken: {0}s'.format(round(TimerEnd - TimerStart, 2)))
 ```
 
-
+## Maya Stuff
 ```python
-
 # Check maya version
-from pymel import versions
-if versions.current() >= versions.v2008:
+import pymel.versions
+if pymel.versions.current() >= pymel.versions.v2008:
     print("The current version is later than Maya 2008")
 
 # returns something like 201400
-print(versions.current())
+print(pymel.versions.current())
+```
 
-
-# To use mel commands via python (basically)
-import maya.cmds as cmds
-
-# pymel
+## Object stuff
+```python
 import pymel.core as pm
 
-# Messy stuff here
-    # Check if selection is an object, ie. a transform with a shape child
+# returns objects (not strings like cmds)
+selection = pm.selected()
 
+for selected in selection:
     # check if selection is a transform (group or object)
-    # a test of type(Selection)
-    print Selection[0].getShape()
+    print(selected.getShape())
             
-    if isinstance(Selection[0], pm.nodetypes.Transform):
+    if isinstance(selected, pm.nodetypes.Transform):
         # Check if first child is a shape? mesh
-        # print type(Selection[0].childAtIndex(0))
-        if isinstance(Selection[0].childAtIndex(0), pm.nodetypes.Mesh):
+        print(type(selected.childAtIndex(0)))
 
-            print Selection[0] + ' is a mesh really'
+        if isinstance(selected.childAtIndex(0), pm.nodetypes.Mesh):
+            print('{} is a mesh really'.format(selected))
         else:
-            print Selection[0] + ' is a group probably'
+            print('{} is a transform probably'.format(selected))
 
-    print Selection[0].fullName()
+    # name
+    print(selected.name())
+
+    # full name!
+    print(selected.fullName())
     
+    # pymel set attr on an object
+    selection.setAttr('displayResolution', 1)
+    selection.setAttr('displayGateMaskColor', (0.0, 0.0, 0.0))
+    selection.setAttr('overscan', 1.0)
+
+    # node type
+    print(node.type())
+
+    # Get namespace (returns something like Car: so also remove the seperator)
+    selection.namespace()[:-1]
+
+
+# pymel if you have the attribute just use set()
+attribute.set('lalala')
+
+```
+
+## Scene
+
+```python
+# Get Scene name
+scene_name = pm.sceneName()
+
+# Get all renderlayers
+for Node in pm.ls(type='renderLayer'):
+    print(Node)
     
-    
-# Create a node (everything is a node), providing type and name
+# Get all vray elememts
+for Node in pm.ls(type='VRayRenderElement'):
+    print(Node)
+
+
+# Set timeline
+frame_start = 1186
+frame_end = 1208
+
+pm.playbackOptions(
+    ast=frame_start,
+    min=frame_start,
+    aet=frame_end,
+    max=frame_end
+)
+
+# Set render range
+pm.setAttr('defaultRenderGlobals.startFrame', FrameStart )
+pm.setAttr('defaultRenderGlobals.endFrame', FrameEnd)
+
+# get timeline range - there is no class, just a function
+frame_start = pm.playbackOptions(query=True, min=True)
+frame_end = pm.playbackOptions(query=True, max=True)
+```
+
+# cmds boo
+
+```python
+# Get an existing node by name
+vray_settings_node = pm.ls(type='VRaySettingsNode')
+
+# vray settings!
 cmds.createNode('VRaySettingsNode', name='vraySettings')
 
-# Get an existing node by name
-VRaySettingsNode = pm.ls(type='VRaySettingsNode')
-
-# Set an attribute on a node, Node.Attriubte
-cmds.setAttr('vraySettings.fileNamePrefix', oRenderDir, type='string')
+# cmds set an attribute on a node (given as string)
+cmds.setAttr('vraySettings.fileNamePrefix', render_path, type='string')
 cmds.setAttr('defaultRenderGlobals.ren', 'vray', type='string')
 
-# pymel
-Selection[0].setAttr('displayResolution', 1)
-Selection[0].setAttr('displayGateMaskColor', (0.0, 0.0, 0.0))
-Selection[0].setAttr('overscan', 1.0)
-
-
-# Set attribute pymel
-Attribute.set('lalala')
-
-
 # Get the node type
-print cmds.nodeType('vraySettings')
+print(cmds.nodeType('vraySettings'))
+
 # Get selected node type
-print cmds.nodeType(cmds.ls(selection=True))
+print(cmds.nodeType(cmds.ls(selection=True)))
 
-
-# pymel version is much tidier
-# if you have a node
-Node.nodeType()
-
-# Just do type!
-Node.type()
-
-
-# Get/Set attributes # vraymaterial is the node
-print VRayMaterial.vrayMaterialId.get()
+# Get/Set attributes vraymaterial is the node
+print(VRayMaterial.vrayMaterialId.get())
 VRayMaterial.vrayMaterialId.set(55)
 
-
 # List all the atrriubtes on a node
-for Attribute in cmds.listAttr('vraySettings'):
-    print Attribute
+for attribute in cmds.listAttr('vraySettings'):
+    print(attribute)
 
 # pymel
-for Attribute in Selection[0].listAttr():
-    print Attribute
-
-
+for attribute in selection[0].listAttr():
+    print(attribute)
 
 # Find out the current renderer
-print 'Current Renderer: ' + str(cmds.getAttr('defaultRenderGlobals.currentRenderer'))
+print('Current Renderer: ' + str(cmds.getAttr('defaultRenderGlobals.)currentRenderer'))
 
 # Set renderer
 cmds.setAttr('defaultRenderGlobals.ren', 'vray', type='string')
 
-
 # Get Scene name
 # Via CMDs
 ScenePath = cmds.file(q=True, sceneName=True)
-# Via PyMel
-SceneName = pm.sceneName()
 
 
-
-# Get all renderlayers
-for Node in pm.ls(type='renderLayer'):
-    print Node
-    
-# Get all vray elememts
-for Node in pm.ls(type='VRayRenderElement'):
-    print Node
-
-    
-    
-# Current Selection
-Selection = cmds.ls(selection=True)
-# pymel
-Selection = pm.selected()
-
-# Get namespace (returns something like Car: so also remove the seperator)
-Selection[0].namespace()[:-1]
+# Current selection
+selection = cmds.ls(selection=True)
+  
 
 # Unlock and flip normals, based on selection, no option to be specific...
 cmds.polyNormalPerVertex(unFreezeNormal=True)
 cmds.ReversePolygonNormals()
 
 
-# Set timeline
-FrameStart = 1186
-FrameEnd = 1208
-
-pm.playbackOptions(ast=FrameStart, min=FrameStart, aet=FrameEnd, max=FrameEnd )
-
-# Set render range
-pm.setAttr('defaultRenderGlobals.startFrame', FrameStart )
-pm.setAttr('defaultRenderGlobals.endFrame', FrameEnd)
-
 # Get render range
-print cmds.getAttr('defaultRenderGlobals.startFrame')
-print cmds.getAttr('defaultRenderGlobals.endFrame')
+print(cmds.getAttr('defaultRenderGlobals.startFrame'))
+print(cmds.getAttr('defaultRenderGlobals.endFrame'))
     
-# get timeline range - there is no class, just a function
-StartFrame = pm.playbackOptions(query=True, min=True)
-EndFrame = pm.playbackOptions(query=True, max=True)
+
 
 
 
