@@ -132,6 +132,19 @@ frame_start = pm.playbackOptions(query=True, min=True)
 frame_end = pm.playbackOptions(query=True, max=True)
 ```
 
+Half the size of all your selected pesky vray lights
+```python
+import pymel.core as pm
+
+selection = pm.selected()
+
+for selected in selection:
+    u = selected.getAttr('uSize')
+    v = selected.getAttr('vSize')
+    selected.setAttr('uSize', u*.5)
+    selected.setAttr('vSize', v*.5)
+```
+
 # cmds boo
 
 ```python
